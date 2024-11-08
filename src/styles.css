@@ -1,0 +1,27 @@
+src/styles.css
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .auth-form input {
+    margin: 10px 0;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  /* Error Message Styling */
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
