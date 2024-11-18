@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const hostName = process.env.REACT_APP_HOST_NAME;
+const PORT = process.env.REACT_APP_PORT;
+
+console.log(`host is ${hostName}`)
+console.log(`port is ${PORT}`)
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,10 +17,9 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:4400/api/auth/login', { email, password });
-      // Assuming successful login sets JWT token in localStorage or state
+      const res = await axios.post(`http://${hostName}:${PORT}/api/auth/login`, { email, password });
       localStorage.setItem('token', res.data.token);
-      window.location.href = '/'; // Redirect to home or dashboard
+      window.location.href = '/todos';
     } catch (err) {
       setError('Invalid credentials');
     }

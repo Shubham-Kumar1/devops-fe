@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const hostName=process.env.REACT_APP_HOST_NAME
+const PORT = process.env.REACT_APP_PORT;
+
 const Register = () => {
-  const [username, setUsername] = useState('');
+  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,7 +15,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:4400/api/auth/register', { username, email, password });
+      const res = await axios.post(`http://${hostName}:${PORT}/api/auth/register`, { name, email, password });
       // Redirect to login page on successful registration
       window.location.href = '/login';
     } catch (err) {
@@ -27,9 +30,9 @@ const Register = () => {
       <form className="form-container" onSubmit={handleRegister}>
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="name"
+          value={name}
+          onChange={(e) => setname(e.target.value)}
           required
         />
         <input
