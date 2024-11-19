@@ -3,9 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TodoItem from "../components/TodoItem";
 
-const hostName = process.env.REACT_APP_HOST_NAME;
-const PORT = process.env.REACT_APP_PORT;
-
 export default function TodoList() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
@@ -14,7 +11,7 @@ export default function TodoList() {
   // Fetch all todos from the API
   const fetchTodos = async () => {
     try {
-      const res = await axios.get(`http://${hostName}:${PORT}/api/todos`, {
+      const res = await axios.get(`http://localhost:4400/api/todos`, {
         headers: { Authorization: localStorage.getItem("token") },
       });
       setTodos(res.data);
@@ -35,7 +32,7 @@ export default function TodoList() {
 
     try {
       await axios.post(
-        `http://${hostName}:${PORT}/api/todos`,
+        `http://localhost:4400/api/todos`,
         { title },
         {
           headers: { Authorization: token },
