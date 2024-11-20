@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-const HOSTNAME=process.env.REACT_APP_HOSTNAME
 
+const HOSTNAME=process.env.REACT_APP_HOSTNAME
 const Register = () => {
+  // console.log(`Hostname hai ${HOSTNAME}`)
   const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +14,6 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      // eslint-disable-next-line
       const res = await axios.post(`http://${HOSTNAME}:4400/api/auth/register`, { name, email, password });
       // Redirect to login page on successful registration
       window.location.href = '/login';
