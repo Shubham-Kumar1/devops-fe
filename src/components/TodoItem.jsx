@@ -1,11 +1,11 @@
 import axios from "axios";
-
+const HOSTNAME=process.env.REACT_APP_HOSTNAME
 export default function TodoItem({ todo, fetchTodos }) {
   // Toggle the completion state of a todo
   const toggleComplete = async () => {
     try {
       await axios.put(
-        `http://localhost:4400/api/todos/${todo.id}`,
+        `http://${HOSTNAME}:4400/api/todos/${todo.id}`,
         { completed: !todo.completed },
         {
           headers: { Authorization: localStorage.getItem("token") },
@@ -21,7 +21,7 @@ export default function TodoItem({ todo, fetchTodos }) {
   const deleteTodo = async () => {
     try {
       await axios.delete(
-        `http://localhost:4400/api/todos/${todo.id}`,
+        `http://${HOSTNAME}:4400/api/todos/${todo.id}`,
         {
           headers: { Authorization: localStorage.getItem("token") },
         }

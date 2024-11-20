@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+const HOSTNAME=process.env.REACT_APP_HOSTNAME
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await axios.get(`http://localhost:4400/api/todos`);
+        const res = await axios.get(`http://${HOSTNAME}:4400/api/todos`);
         setTodos(res.data);
       } catch (error) {
         console.error('Error fetching todos:', error);

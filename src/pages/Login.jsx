@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const HOSTNAME=process.env.REACT_APP_HOSTNAME
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,7 +12,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`http://localhost:4400/api/auth/login`, { email, password });
+      const res = await axios.post(`http://${HOSTNAME}:4400/api/auth/login`, { email, password });
       localStorage.setItem('token', res.data.token);
       window.location.href = '/todos';
     } catch (err) {
