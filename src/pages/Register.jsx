@@ -13,6 +13,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
+      // eslint-disable-next-line
       const res = await axios.post(`http://${HOSTNAME}:4400/api/auth/register`, { name, email, password });
       // Redirect to login page on successful registration
       window.location.href = '/login';
