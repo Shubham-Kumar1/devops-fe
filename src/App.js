@@ -13,7 +13,7 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/todos" element={<TodoList />} /> {/* Add this route to navigate to the Todo page */}
+        <Route path="/todos" element={<TodoList />} />
       </Routes>
     </Router>
   );
