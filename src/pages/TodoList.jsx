@@ -11,7 +11,7 @@ export default function TodoList() {
   // Fetch all todos from the API
   const fetchTodos = async () => {
     try {
-      const res = await axios.get(`http://${process.env.REACT_APP_BACKENDHOST}:4400/api/todos`, {
+      const res = await axios.get(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
         headers: { Authorization: localStorage.getItem("token") },
       });
       setTodos(res.data);
@@ -32,7 +32,7 @@ export default function TodoList() {
 
     try {
       await axios.post(
-        `http://${process.env.REACT_APP_BACKENDHOST}:4400/api/todos`,
+        `http://${process.env.REACT_APP_BACKENDHOST}/api/todos`,
         { title },
         {
           headers: { Authorization: token },

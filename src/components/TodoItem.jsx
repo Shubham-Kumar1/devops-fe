@@ -4,7 +4,7 @@ export default function TodoItem({ todo, fetchTodos }) {
   const toggleComplete = async () => {
     try {
       await axios.put(
-        `http://${process.env.REACT_APP_BACKENDHOST}:4400/api/todos/${todo.id}`,
+        `http://${process.env.REACT_APP_BACKENDHOST}/api/todos/${todo.id}`,
         { completed: !todo.completed },
         {
           headers: { Authorization: localStorage.getItem("token") },
@@ -20,7 +20,7 @@ export default function TodoItem({ todo, fetchTodos }) {
   const deleteTodo = async () => {
     try {
       await axios.delete(
-        `http://${process.env.REACT_APP_BACKENDHOST}:4400/api/todos/${todo.id}`,
+        `http://${process.env.REACT_APP_BACKENDHOST}/api/todos/${todo.id}`,
         {
           headers: { Authorization: localStorage.getItem("token") },
         }

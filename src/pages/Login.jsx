@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`http://${process.env.REACT_APP_BACKENDHOST}:4400/api/auth/login`, { email, password });
+      const res = await axios.post(`http://${process.env.REACT_APP_BACKENDHOST}/api/auth/login`, { email, password });
       localStorage.setItem('token', res.data.token);
       window.location.href = '/todos';
     } catch (err) {
