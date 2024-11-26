@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const Register = () => {
-  console.log(`Hostname hai ${process.env.REACT_APP_BACKENDHOST}`)
+  console.log(`Hostname hai ${process.env.REACT_APP_BACKENDHOST}`);
+  
   const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,18 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`http://${process.env.REACT_APP_BACKENDHOST}/api/auth/register`, { name, email, password });
+      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+
       // Redirect to login page on successful registration
       window.location.href = '/login';
     } catch (err) {
@@ -28,7 +39,7 @@ const Register = () => {
       <form className="form-container" onSubmit={handleRegister}>
         <input
           type="text"
-          placeholder="name"
+          placeholder="Name"
           value={name}
           onChange={(e) => setname(e.target.value)}
           required

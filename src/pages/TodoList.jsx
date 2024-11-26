@@ -1,6 +1,4 @@
-// src/pages/TodoList.jsx
 import { useState, useEffect } from "react";
-import axios from "axios";
 import TodoItem from "../components/TodoItem";
 
 export default function TodoList() {
@@ -11,10 +9,17 @@ export default function TodoList() {
   // Fetch all todos from the API
   const fetchTodos = async () => {
     try {
-      const res = await axios.get(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
+      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
+        method: "GET",
         headers: { Authorization: localStorage.getItem("token") },
       });
-      setTodos(res.data);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch todos.");
+      }
+
+      const data = await response.json();
+      setTodos(data);
     } catch (error) {
       console.error("Error fetching todos:", error);
       setError("Failed to fetch todos. Please try again.");
@@ -31,13 +36,19 @@ export default function TodoList() {
     }
 
     try {
-      await axios.post(
-        `http://${process.env.REACT_APP_BACKENDHOST}/api/todos`,
-        { title },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({ title }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add todo.");
+      }
+
       setTitle("");
       fetchTodos(); // Fetch the updated list of todos
     } catch (error) {
