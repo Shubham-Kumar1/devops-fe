@@ -1,6 +1,5 @@
 import axios from "axios";
 export default function TodoItem({ todo, fetchTodos }) {
-  // Toggle the completion state of a todo
   const toggleComplete = async () => {
     try {
       await axios.put(
@@ -10,13 +9,11 @@ export default function TodoItem({ todo, fetchTodos }) {
           headers: { Authorization: localStorage.getItem("token") },
         }
       );
-      fetchTodos(); // Fetch updated todos after toggling completion status
+      fetchTodos();
     } catch (error) {
       console.error("Error toggling completion:", error);
     }
   };
-
-  // Delete a todo item
   const deleteTodo = async () => {
     try {
       await axios.delete(
@@ -25,7 +22,7 @@ export default function TodoItem({ todo, fetchTodos }) {
           headers: { Authorization: localStorage.getItem("token") },
         }
       );
-      fetchTodos(); // Fetch updated todos after deletion
+      fetchTodos();
     } catch (error) {
       console.error("Error deleting todo:", error);
     }

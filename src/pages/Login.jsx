@@ -24,7 +24,7 @@ const Login = () => {
 
       const data = await response.json();
       localStorage.setItem('token', data.token);
-      window.location.href = '/todos'; // Redirect to /todos after login
+      window.location.href = '/todos';
     } catch (err) {
       setError('Invalid credentials');
     }

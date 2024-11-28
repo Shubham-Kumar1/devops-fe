@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import TodoItem from "../components/TodoItem";
+import "./TodoList.css";
 
 export default function TodoList() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
-  const [error, setError] = useState(null); // Track errors
-
-  // Fetch all todos from the API
+  const [error, setError] = useState(null);
   const fetchTodos = async () => {
     try {
       const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
@@ -25,8 +24,6 @@ export default function TodoList() {
       setError("Failed to fetch todos. Please try again.");
     }
   };
-
-  // Add a new todo
   const addTodo = async () => {
     const token = localStorage.getItem("token");
 
@@ -62,16 +59,19 @@ export default function TodoList() {
   }, []);
 
   return (
-    <div>
+    <div className="todo-list-container">
       <h2>My Todos</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error message if exists */}
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Add a new todo"
-      />
-      <button onClick={addTodo}>Add Todo</button>
-      <ul>
+      {error && <p className="error-message">{error}</p>} {/* Show error message if exists */}
+      <div className="todo-input-container">
+        <input
+          className="todo-input"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Add a new todo"
+        />
+        <button className="todo-button" onClick={addTodo}>Add Todo</button>
+      </div>
+      <ul className="todo-list">
         {todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} fetchTodos={fetchTodos} />
         ))}
