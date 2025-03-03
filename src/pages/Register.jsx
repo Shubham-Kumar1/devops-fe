@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getProtocol } from "../config";
 
 const Register = () => {
   console.log(`Hostname hai ${process.env.REACT_APP_BACKENDHOST}`);
@@ -13,7 +14,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/auth/register`, {
+      const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

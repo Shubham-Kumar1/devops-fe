@@ -1,9 +1,12 @@
 import axios from "axios";
+
+const getProtocol = () => process.env.REACT_APP_TLS === "true" ? "https" : "http";
+
 export default function TodoItem({ todo, fetchTodos }) {
   const toggleComplete = async () => {
     try {
       await axios.put(
-        `http://${process.env.REACT_APP_BACKENDHOST}/api/todos/${todo.id}`,
+        `${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/todos/${todo.id}`,
         { completed: !todo.completed },
         {
           headers: { Authorization: localStorage.getItem("token") },
@@ -17,7 +20,7 @@ export default function TodoItem({ todo, fetchTodos }) {
   const deleteTodo = async () => {
     try {
       await axios.delete(
-        `http://${process.env.REACT_APP_BACKENDHOST}/api/todos/${todo.id}`,
+        `${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/todos/${todo.id}`,
         {
           headers: { Authorization: localStorage.getItem("token") },
         }

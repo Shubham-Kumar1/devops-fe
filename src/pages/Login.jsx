@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getProtocol } from "../config";
+
+// const useTLS = process.env.REACT_APP_TLS === 'true';
+// const protocol = useTLS ? 'https' : 'http';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  console.log(`Protocol: ${getProtocol()}`);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/auth/login`, {
+      const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

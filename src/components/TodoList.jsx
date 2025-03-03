@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { getProtocol } from "../config";
+
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await axios.get(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`);
+        const res = await axios.get(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/todos`);
         setTodos(res.data);
       } catch (error) {
         console.error('Error fetching todos:', error);

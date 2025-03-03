@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import TodoItem from "../components/TodoItem";
+import { getProtocol } from "../config";
 import "./TodoList.css";
 
 export default function TodoList() {
@@ -8,7 +9,7 @@ export default function TodoList() {
   const [error, setError] = useState(null);
   const fetchTodos = async () => {
     try {
-      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
+      const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
         method: "GET",
         headers: { Authorization: localStorage.getItem("token") },
       });
@@ -33,7 +34,7 @@ export default function TodoList() {
     }
 
     try {
-      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
+      const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

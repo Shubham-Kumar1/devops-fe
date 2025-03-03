@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { getProtocol } from "../config";
 
 export const AuthContext = createContext();
 
@@ -7,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/auth/login`, {
+      const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      const response = await fetch(`http://${process.env.REACT_APP_BACKENDHOST}/api/auth/register`, {
+      const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
