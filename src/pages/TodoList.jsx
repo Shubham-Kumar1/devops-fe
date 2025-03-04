@@ -7,8 +7,12 @@ export default function TodoList() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [filter, setFilter] = useState('all'); // 'all', 'active', 'completed'
+
   const fetchTodos = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
         method: "GET",
         headers: { Authorization: localStorage.getItem("token") },
@@ -23,24 +27,30 @@ export default function TodoList() {
     } catch (error) {
       console.error("Error fetching todos:", error);
       setError("Failed to fetch todos. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
-  const addTodo = async () => {
-    const token = localStorage.getItem("token");
 
+  const addTodo = async (e) => {
+    e.preventDefault();
+    if (!title.trim()) return;
+
+    const token = localStorage.getItem("token");
     if (!token) {
       setError("You must be logged in to add a todo.");
       return;
     }
 
     try {
+      setIsLoading(true);
       const response = await fetch(`${getProtocol()}://${process.env.REACT_APP_BACKENDHOST}/api/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
         },
-        body: JSON.stringify({ title }),
+        body: JSON.stringify({ title: title.trim() }),
       });
 
       if (!response.ok) {
@@ -48,10 +58,12 @@ export default function TodoList() {
       }
 
       setTitle("");
-      fetchTodos(); // Fetch the updated list of todos
+      fetchTodos();
     } catch (error) {
       console.error("Error adding todo:", error);
       setError("Failed to add todo. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,24 +71,87 @@ export default function TodoList() {
     fetchTodos();
   }, []);
 
+  const filteredTodos = todos.filter(todo => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
+
+  const activeTodosCount = todos.filter(todo => !todo.completed).length;
+
   return (
     <div className="todo-list-container">
-      <h2>My Todos</h2>
-      {error && <p className="error-message">{error}</p>} {/* Show error message if exists */}
-      <div className="todo-input-container">
-        <input
-          className="todo-input"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Add a new todo"
-        />
-        <button className="todo-button" onClick={addTodo}>Add Todo</button>
+      <div className="todo-header">
+        <h1>My Tasks</h1>
+        <p className="todo-stats">
+          {activeTodosCount} tasks remaining
+        </p>
       </div>
-      <ul className="todo-list">
-        {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} fetchTodos={fetchTodos} />
-        ))}
-      </ul>
+
+      <form className="todo-form" onSubmit={addTodo}>
+        <div className="input-group">
+          <input
+            className="todo-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="What needs to be done?"
+            disabled={isLoading}
+          />
+          <button 
+            type="submit" 
+            className="add-todo-btn"
+            disabled={isLoading || !title.trim()}
+          >
+            <i className="fas fa-plus"></i>
+          </button>
+        </div>
+        {error && <p className="error-message">{error}</p>}
+      </form>
+
+      <div className="todo-filters">
+        <button 
+          className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+          onClick={() => setFilter('all')}
+        >
+          All
+        </button>
+        <button 
+          className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
+          onClick={() => setFilter('active')}
+        >
+          Active
+        </button>
+        <button 
+          className={`filter-btn ${filter === 'completed' ? 'active' : ''}`}
+          onClick={() => setFilter('completed')}
+        >
+          Completed
+        </button>
+      </div>
+
+      {isLoading && todos.length === 0 ? (
+        <div className="loading-spinner">
+          <i className="fas fa-spinner fa-spin"></i>
+          <span>Loading your tasks...</span>
+        </div>
+      ) : (
+        <ul className="todo-list">
+          {filteredTodos.map((todo) => (
+            <TodoItem key={todo.id} todo={todo} fetchTodos={fetchTodos} />
+          ))}
+          {!isLoading && filteredTodos.length === 0 && (
+            <li className="empty-state">
+              <i className="fas fa-clipboard-list"></i>
+              <p>No tasks found</p>
+              <p className="empty-state-subtitle">
+                {filter === 'all' 
+                  ? "Add a new task to get started!" 
+                  : `No ${filter} tasks found.`}
+              </p>
+            </li>
+          )}
+        </ul>
+      )}
     </div>
   );
 }
