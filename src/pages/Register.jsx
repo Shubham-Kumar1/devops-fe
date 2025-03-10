@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { getProtocol } from "../config";
 
 const Register = () => {
-  console.log(`Hostname hai ${process.env.REACT_APP_BACKENDHOST}`);
-  
+  console.log(`Hostname: ${process.env.REACT_APP_BACKENDHOST}`);
+
   const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
